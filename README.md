@@ -1,0 +1,2 @@
+# genai_dataapps_with_snowflake_and_amazon_bedrock
+GenAI DataApps with Snowflake and Amazon Bedrock
