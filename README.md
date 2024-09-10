@@ -37,3 +37,55 @@ Amazon Bedrock is a fully managed service that makes it easy to build and scale 
 Anthropic Claude 3 is a next-generation large language model (LLM) developed by Anthropic, known for its safety and alignment with human intentions. Claude 3 is designed to generate natural language text that is coherent, contextually relevant, and aligned with user input. It is part of the Claude family of models, which emphasize ethical AI usage and advanced reasoning capabilities, making it suitable for a wide range of applications, from customer support to creative writing.
 
 in this solution will Amazon Bedrock with Anthropic Claude Sonnet 3.5 will be used to create the personalized email.
+
+## Step 1: Setting up your AWS Environment
+The following prerequisites are needed to run this demo:
+1. An EC2 instance with the following software/ python libraries packages:
+  - python
+  - numpy
+  - faker
+  - boto3
+  - AWS SDK
+
+2. Access to Amazon Bedrock Models
+  In the AWS Console go to the Amazon Bedrock service and make sure you have access to the Claude 3 Sonnet Model. In the case you dont have access, please request access.
+  ![Alt text](images/Bedrock_Model_Access.png)
+
+3. Create AWS IAM User and Access Keys to access Amazon Bedrock
+Create a new IAM user by going to the IAM console and press create user.
+    1.Create a new IAM user by going to the IAM console and press create user.
+    ![Alt text](images/Create_IAM.png)
+    3. Provide the new IAM user with a user name.
+    ![Alt text](images/Create_IAM_2.png)
+    4. Attach the AmazonBedrockFullAccess policy to the user.
+    ![Alt text](images/Create_IAM_3_Attach_Policy.png)
+    5. Review the user details and create the user.
+    ![Alt text](images/Create_IAM_4_Create_User.png)
+    6. Now to create the Access Keys, open the user on the console and press on Create Access Keys.
+    ![Alt text](images/Create_IAM_5_Access_Keys.png)
+    7. Select the Third-party service key.
+    ![Alt text](images/Create_IAM_6_Third-party.png)
+    8. Copy the Access Key and Secret Access key
+    ![Alt text](images/Create_IAM_7_Retrieve_keys.png)
+
+4. Key-pair for integration between Amazon Data Firehose and Snowpipe Streaming
+   1. Create a key pair in AWS Session Manager console by executing the following commands. You will be prompted to give an encryption password, remember this phrase, you will need it later.
+    ```
+    openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out rsa_key.p8
+    ```
+    See example screenshot:
+    ![Alt text](images/Create_keys_priv.png)
+    2. Create a public key
+    ```
+    openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub
+    ```
+    See example screenshot:
+    ![Alt text](images/Create_keys_pub.png)
+    3. Capture the private and public keys
+    ```
+    grep -v KEY rsa_key.pub | tr -d '\n' | awk '{print $1}' > pub.Key
+
+    grep -v KEY rsa_key.p8 | tr -d '\n' | awk '{print $1}' > priv.Key
+    ```
+    See example screenshot:
+    ![Alt text](images/Create_key_3.png)
